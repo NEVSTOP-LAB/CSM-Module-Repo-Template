@@ -55,12 +55,9 @@
 
 ### 4.2 表格列说明
 
-| 列 | 填写内容 |
-| --- | --- |
-| **API** | 完整消息字符串，包含前缀，例如 `` `API: Start` `` |
-| **描述** | 一句话说明该 API 的作用 |
-| **参数** | `>>` 之后传递的数据，明确注明类型。无参数时写 `N/A`。 |
-| **响应** | 模块返回的内容。无响应或异步调用时写 `N/A`。 |
+| **API** | **描述** | **参数数据类型** | **参数描述** | **响应数据类型** | **响应描述** |
+| --- | --- | --- | --- | --- | --- |
+| 完整消息字符串，包含前缀，例如 `` `API: Start` `` | 一句话说明该 API 的作用 | 参数的数据类型（例如 `APIString`、`MassData`、`${FilePath}` 等）。无参数时写 `N/A`。 | `>>` 之后传递的数据含义。无参数时写 `N/A`。 | 响应的数据类型。无响应或异步调用时写 `N/A`。 | 模块返回内容的含义。无响应或异步调用时写 `N/A`。 |
 
 ### 4.3 参数类型标注规范
 
@@ -70,14 +67,14 @@
 数据文件夹的完整路径 (APIString)
 一维波形数组 (MassData)
 包含配置的簇 (HexStr)
-文件路径 (${FilePath})   ← INI 静态变量
+文件路径 (SafeStr)   ← 由 INI 静态变量 `${FilePath}` 提供
 ```
 
 支持的类型：
 
 | 类型 | 备注 |
 | --- | --- |
-| `APIString` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) |
+| `APIString` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
 | `SafeStr` | 内置；特殊字符编码为 `%[HEX]` |
 | `HexStr` | 内置；Variant 序列化为十六进制 |
 | `MassData` | 插件；传递 `Start:N,Size:M` |
@@ -233,7 +230,7 @@ direction LR
 - [ ] 文件名与模块 VI 名称一致。
 - [ ] 功能简述在 ≤ 3 句话内回答"这个模块做什么？"。
 - [ ] 每一个 `API:` case 分支都列在 API 表中。
-- [ ] 参数类型使用标准标注格式（例如 `(Plain String)`、`(MassData)`）。
+- [ ] 参数类型使用标准标注格式（例如 `(APIString)`、`(MassData)`）。
 - [ ] 所有 `Status`/`Interrupt` 广播都列在状态广播表中。
 - [ ] 每行明确标注广播类型为 `Status` 或 `Interrupt`。
 - [ ] 配置说明涵盖所有前面板控件和 INI 键值。
@@ -249,7 +246,7 @@ direction LR
 
 | 错误 | 正确做法 |
 | --- | --- |
-| 将内部状态记录为 API | 只记录以 `API:` 为前缀的 case |
+| 将内部状态记录为 API | 只记录 API case（包括以 `API:` 为前缀的 case 和无 `:` 分隔的非内置 case） |
 | 省略参数类型 | 始终在参数列写 `(类型)` |
 | 同步/异步箭头用错 | 同步：`-@`，异步：`->`，无应答：`->|` |
 | 订阅时忘写 `@模块名` | 始终使用 `Status@源模块 >> API:Handler@目标模块 -><register>` |
@@ -262,8 +259,8 @@ direction LR
 
 关于此文档模式的完整生产级示例，请参阅：
 
-- [`CSM-Continuous-Measurement-and-Logging` README（英文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README.md)
-- [`CSM-Continuous-Measurement-and-Logging` README（中文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README(CN).md)
+- [`CSM-Continuous-Measurement-and-Logging` README（英文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Measurement-and-Logging/blob/main/README.md)
+- [`CSM-Continuous-Measurement-and-Logging` README（中文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Measurement-and-Logging/blob/main/README(CN).md)
 
 该示例记录了三个模块（`Logging Module`、`Acquisition Module`、`Algorithm Module`），包含 API 表、状态表和使用示例——正是本技能文档所编码的模式。
 
