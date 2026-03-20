@@ -20,12 +20,12 @@
 
 | 依赖 | 类型 | 链接 |
 | --- | --- | --- |
-| Communicable State Machine (CSM) | 必须 | [GitHub](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) |
-| CSM API String Arguments Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
-| CSM MassData Parameter Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
-| CSM INI Static Variable Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
-| CSM Mermaid Plugin | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) |
-| CSM TCP Router | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) |
+| Communicable State Machine (CSM) | 必须 | [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) |
+| CSM API String Arguments Support | 可选 | [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
+| CSM MassData Parameter Support | 可选 | [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| CSM INI Static Variable Support | 可选 | [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
+| CSM Mermaid Plugin | 可选 | [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) |
+| CSM TCP Router | 可选 | [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) |
 
 > 删除不需要的行。
 
@@ -35,16 +35,49 @@
 
 以下是外部调用者可以发送给本模块的消息。
 
-| API | 描述 | 参数数据类型 | 参数描述 | 响应数据类型 | 响应描述 |
-| --- | --- | --- | --- | --- | --- |
-| `API: Initialize` | 初始化内部资源。必须在其他 API 之前调用。 | `APIString` | 配置文件路径 | N/A | N/A |
-| `API: Start` | 启动模块的主要操作。 | N/A | N/A | N/A | N/A |
-| `API: Stop` | 优雅地停止主要操作。 | N/A | N/A | N/A | N/A |
-| `API: [示例：传递结构体数据]` | [描述] | `HexStr` | 配置簇 | N/A | N/A |
-| `API: [示例：传递大块数据]` | [描述] | `MassData` | 一维波形数组 | N/A | N/A |
-| `API: Get Status` | 查询当前状态。 | N/A | N/A | `APIString` | 状态描述 |
+### `API: Initialize`
 
-> 根据需要增减行。请记录每一个对外可调用的 `API:` 消息。
+初始化内部资源。必须在其他 API 之前调用。
+
+- **参数**：`APIString` — 配置文件路径
+- **响应**：N/A
+
+### `API: Start`
+
+启动模块的主要操作。
+
+- **参数**：N/A
+- **响应**：N/A
+
+### `API: Stop`
+
+优雅地停止主要操作。
+
+- **参数**：N/A
+- **响应**：N/A
+
+### `API: [示例：传递结构体数据]`
+
+[描述]
+
+- **参数**：`HexStr` — 配置簇
+- **响应**：N/A
+
+### `API: [示例：传递大块数据]`
+
+[描述]
+
+- **参数**：`MassData` — 一维波形数组
+- **响应**：N/A
+
+### `API: Get Status`
+
+查询当前状态。
+
+- **参数**：N/A
+- **响应**：`APIString` — 状态描述
+
+> 根据需要增减段落。请记录每一个对外可调用的 `API:` 消息。
 
 ### 参数类型说明
 
@@ -62,10 +95,21 @@
 
 以下是本模块**发出**的消息，用于通知订阅者内部状态变化。
 
-| 状态 | 广播类型 | 描述 | 参数数据类型 | 参数描述 |
-| --- | --- | --- | --- | --- |
-| `[状态名称 A]` | `Status` | [发生了什么 / 哪些数据已就绪] | `HexStr` | 数据内容 |
-| `[状态名称 B]` | `Interrupt` | [错误或需要立即处理的中断事件描述] | `APIString` | 错误信息 |
+### `[状态名称 A]`
+
+**广播类型**：`Status`
+
+[发生了什么 / 哪些数据已就绪]
+
+- **参数**：`HexStr` — 数据内容
+
+### `[状态名称 B]`
+
+**广播类型**：`Interrupt`
+
+[错误或需要立即处理的中断事件描述]
+
+- **参数**：`APIString` — 错误信息
 
 > - 使用 **`Status`** 表示正常的、预期中的状态转换。
 > - 使用 **`Interrupt`** 表示需要立即关注的错误或事件。
