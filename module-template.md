@@ -16,16 +16,28 @@
 
 ---
 
+## 模块信息
+
+| 属性 | 值 |
+| --- | --- |
+| LabVIEW 版本 | ≥ [版本号，例如 2019] |
+| 支持的操作系统 | [Windows / Linux / macOS] |
+| 支持 RT | [✅ 支持 / ❌ 不支持] |
+| 支持 64-bit | [✅ 支持 / ❌ 不支持] |
+
+---
+
 ## 依赖项
 
-| 依赖 | 类型 | 链接 |
-| --- | --- | --- |
-| Communicable State Machine (CSM) | 必须 | [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) |
-| CSM API String Arguments Support | 可选 | [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
-| CSM MassData Parameter Support | 可选 | [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
-| CSM INI Static Variable Support | 可选 | [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
-| CSM Mermaid Plugin | 可选 | [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) |
-| CSM TCP Router | 可选 | [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) |
+**必须**
+- [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine)
+
+**可选**（根据所用功能选择）
+- [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support)
+- [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)
+- [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support)
+- [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin)
+- [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App)
 
 > 删除不需要的行。
 
@@ -39,6 +51,7 @@
 
 初始化内部资源。必须在其他 API 之前调用。
 
+- **调用方式**：异步 (`->`)
 - **参数**：`APIString` — 配置文件路径
 - **响应**：N/A
 
@@ -46,6 +59,7 @@
 
 启动模块的主要操作。
 
+- **调用方式**：异步 (`->`)
 - **参数**：N/A
 - **响应**：N/A
 
@@ -53,6 +67,7 @@
 
 优雅地停止主要操作。
 
+- **调用方式**：异步 (`->`)
 - **参数**：N/A
 - **响应**：N/A
 
@@ -60,6 +75,7 @@
 
 [描述]
 
+- **调用方式**：异步 (`->`)
 - **参数**：`HexStr` — 配置簇
 - **响应**：N/A
 
@@ -67,6 +83,7 @@
 
 [描述]
 
+- **调用方式**：异步 (`->`)
 - **参数**：`MassData` — 一维波形数组
 - **响应**：N/A
 
@@ -74,6 +91,7 @@
 
 查询当前状态。
 
+- **调用方式**：同步 (`-@`)
 - **参数**：N/A
 - **响应**：`APIString` — 状态描述
 
