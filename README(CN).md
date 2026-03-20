@@ -90,51 +90,30 @@ MaxFileSizeMB = 100
 
 ### 7. 使用示例
 
-提供具体的消息字符串片段。
+提供典型的调用脚本片段，涵盖完整生命周期。
 
 ```text
-// 初始化并启动
-API: Initialize >> C:\config\mymodule.ini -> DataLogger
+// =============================================
+// 典型调用脚本示例（以 DataLogger 模块为例）
+// =============================================
+
+// 1. 订阅模块广播（在启动前注册，确保不遗漏事件）
+Data Ready@DataLogger >> API: On Data Ready@Processor -><register>
+Error Occurred@DataLogger >> API: On Error@MainApp -><register as interrupt>
+
+// 2. 初始化并启动模块
+API: Initialize >> C:\config\datalogger.ini -> DataLogger
 API: Start -> DataLogger
 
-// 订阅输出
-Data Ready@DataLogger >> Process:OnData@Processor -><register>
+// 3. 运行时调用
+API: Update Settings >> OutputFolder:<SAFESTR>C:\NewData -> DataLogger
 
-// 停止并清理
+// 4. 停止并清理
 API: Stop -> DataLogger
+
+// 5. 取消订阅（可选，模块退出时框架会自动清理内部订阅）
+Data Ready@DataLogger >> API: On Data Ready@Processor -><unregister>
 ```
-
----
-
-## CSM 消息语法快速参考
-
-```text
-// 异步调用
-API: Start -> 目标模块
-
-// 带参数的异步调用
-API: Configure >> 参数 -> 目标模块
-
-// 无应答异步调用
-API: Log >> 数据 ->| 目标模块
-
-// 同步调用（调用方等待响应）
-API: GetValue -@ 目标模块
-
-// 广播正常状态
-Status >> 数据 -><status>
-
-// 广播中断状态
-Error >> 详情 -><interrupt>
-
-// 订阅：将源模块的状态路由到处理模块的 API
-Status@源模块 >> API:Handler@处理模块 -><register>
-
-// 取消订阅
-Status@源模块 >> API:Handler@处理模块 -><unregister>
-```
-
-完整语法参考：<https://github.com/NEVSTOP-LAB/Communicable-State-Machine/blob/main/.doc/Syntax.md>
 
 ---
 

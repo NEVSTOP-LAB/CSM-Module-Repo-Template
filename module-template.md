@@ -25,6 +25,7 @@
 | CSM MassData Parameter Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
 | CSM INI Static Variable Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
 | CSM Mermaid Plugin | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) |
+| CSM TCP Router | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) |
 
 > 删除不需要的行。
 
@@ -34,14 +35,14 @@
 
 以下是外部调用者可以发送给本模块的消息。
 
-| API | 描述 | 参数 | 响应 |
-| --- | --- | --- | --- |
-| `API: Initialize` | 初始化内部资源。必须在其他 API 之前调用。 | 配置文件路径 `(APIString)` | N/A |
-| `API: Start` | 启动模块的主要操作。 | N/A | N/A |
-| `API: Stop` | 优雅地停止主要操作。 | N/A | N/A |
-| `API: [示例：传递结构体数据]` | [描述] | 配置簇 `(HexStr)` | N/A |
-| `API: [示例：传递大块数据]` | [描述] | 一维波形数组 `(MassData)` | N/A |
-| `API: Get Status` | 查询当前状态。 | N/A | 状态描述 `(APIString)` |
+| API | 描述 | 参数数据类型 | 参数描述 | 响应数据类型 | 响应描述 |
+| --- | --- | --- | --- | --- | --- |
+| `API: Initialize` | 初始化内部资源。必须在其他 API 之前调用。 | `APIString` | 配置文件路径 | N/A | N/A |
+| `API: Start` | 启动模块的主要操作。 | N/A | N/A | N/A | N/A |
+| `API: Stop` | 优雅地停止主要操作。 | N/A | N/A | N/A | N/A |
+| `API: [示例：传递结构体数据]` | [描述] | `HexStr` | 配置簇 | N/A | N/A |
+| `API: [示例：传递大块数据]` | [描述] | `MassData` | 一维波形数组 | N/A | N/A |
+| `API: Get Status` | 查询当前状态。 | N/A | N/A | `APIString` | 状态描述 |
 
 > 根据需要增减行。请记录每一个对外可调用的 `API:` 消息。
 
@@ -61,10 +62,10 @@
 
 以下是本模块**发出**的消息，用于通知订阅者内部状态变化。
 
-| 状态 | 广播类型 | 描述 | 参数 |
-| --- | --- | --- | --- |
-| `[状态名称 A]` | `Status` | [发生了什么 / 哪些数据已就绪] | 数据 `(HexStr)` |
-| `[状态名称 B]` | `Interrupt` | [错误或需要立即处理的中断事件描述] | 错误信息 `(APIString)` |
+| 状态 | 广播类型 | 描述 | 参数数据类型 | 参数描述 |
+| --- | --- | --- | --- | --- |
+| `[状态名称 A]` | `Status` | [发生了什么 / 哪些数据已就绪] | `HexStr` | 数据内容 |
+| `[状态名称 B]` | `Interrupt` | [错误或需要立即处理的中断事件描述] | `APIString` | 错误信息 |
 
 > - 使用 **`Status`** 表示正常的、预期中的状态转换。
 > - 使用 **`Interrupt`** 表示需要立即关注的错误或事件。

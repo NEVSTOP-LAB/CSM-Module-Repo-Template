@@ -50,7 +50,8 @@
 ### 4.1 什么算作"API"？
 
 - 任何以 `API:` 为前缀命名的 case 分支（例如 `API: Start`、`API: Log`）。
-- **不要**将内部状态（`Initialize`、`Idle`、`Error Handler` 等）记录为 API，除非它们是有意公开的。
+- 或**没有 `:` 分割的非内置 case 分支**（例如用户自定义的 `ReadData`、`GetValue`）。
+- **不要**将内置系统状态（`Macro: Initialize`、`Macro: Exit`、`Error Handler`、`Response`、`Async Response` 等）记录为 API，除非它们是有意公开的。
 
 ### 4.2 表格列说明
 
