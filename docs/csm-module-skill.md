@@ -177,6 +177,8 @@ Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 - **API 参数**：传输的是字符串，需要使用 CSM 参数类型（`APIString`、`HexStr`、`SafeStr`、`MassData` 等）进行编解码。
 - **属性参数**：直接使用 **LabVIEW 数据类型**（如 `String`、`Boolean`、`DBL`、`I32`），不需要任何 CSM 类型编解码。
 
+属性是**可选的**：属性在被显式设置之前可能并不存在。读取一个不存在的属性时，`CSM - Get Module Attribute.vi` 的 `Found` 输出为 FALSE，并返回调用方指定的默认值，不会产生错误。因此，文档中应注明每个属性是否保证存在，以及缺省时的回退值。
+
 > ⚠️ **重要**：Attribute 对外的接口，建议只使用简单的 LabVIEW 数据类型（如数值、布尔、字符串），而**不是** CSM 的参数类型。
 
 ### 6.2 接口描述格式
@@ -191,6 +193,7 @@ Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 - **类型**：`[LabVIEW 数据类型]`（例如 `String`、`Boolean`、`DBL`、`I32`）
 - **访问方式**：[读写 / 只读]
 - **默认值**：[默认值，若无则写 N/A]
+- **是否必须存在**：[必须 / 可选（不存在时使用默认值）]
 ````
 
 示例：
@@ -203,6 +206,7 @@ Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 - **类型**：`DBL`
 - **访问方式**：读写
 - **默认值**：1000.0
+- **是否必须存在**：可选（不存在时使用调用方指定的默认值）
 
 ### `IsRunning`
 
@@ -211,6 +215,7 @@ Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 - **类型**：`Boolean`
 - **访问方式**：只读
 - **默认值**：FALSE
+- **是否必须存在**：必须（由模块在 Macro: Initialize 中写入）
 ````
 
 ### 6.3 读写访问说明
@@ -219,6 +224,17 @@ Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 | --- | --- |
 | 读写 | 外部可通过 `CSM - Set Module Attribute.vi` 修改，也可通过 `CSM - Get Module Attribute.vi` 读取 |
 | 只读 | 外部只能通过 `CSM - Get Module Attribute.vi` 读取，不应由外部写入（模块内部维护） |
+
+### 6.4 属性可选性说明
+
+读取属性时，属性不一定存在。调用 `CSM - Get Module Attribute.vi` 时：
+
+- 如果属性存在，`Found` 输出为 TRUE，`Value` 输出为属性当前值。
+- 如果属性不存在，`Found` 输出为 FALSE，`Value` 输出为调用方传入的 `Default Value`，**不产生错误**。
+
+因此，在文档的 `**是否必须存在**` 字段中应注明：
+- **必须**：模块保证该属性在初始化后一定存在（通常在 `Macro: Initialize` 中写入）。
+- **可选**：该属性可能不存在，调用方应始终提供合理的默认值。
 
 ---
 
@@ -345,8 +361,9 @@ direction LR
 - [ ] 每个 API 段落包含描述、`**参数**` 和 `**响应**` 字段（含 CSM 参数类型和数据描述）。
 - [ ] 所有 `Status`/`Interrupt` 广播都有独立的三级段落（`###`）。
 - [ ] 每个广播段落明确标注广播类型为 `Status` 或 `Interrupt`。
-- [ ] 如果模块有对外暴露的属性，每个属性都有独立的三级段落（`###`），包含类型（LabVIEW 数据类型）、访问方式和默认值。
+- [ ] 如果模块有对外暴露的属性，每个属性都有独立的三级段落（`###`），包含类型（LabVIEW 数据类型）、访问方式、默认值和是否必须存在。
 - [ ] 属性的类型使用 **LabVIEW 数据类型**（如 `String`、`DBL`、`Boolean`），**不是** CSM 参数类型。
+- [ ] 每个属性注明 `**是否必须存在**`：必须（初始化后保证存在）或可选（可能不存在，调用方需提供默认值）。
 - [ ] 配置说明涵盖所有前面板控件和 INI 键值。
 - [ ] 调用限制说明包含初始化顺序和任何单例规则。
 - [ ] 至少包含一个带注释的使用示例。
@@ -370,6 +387,7 @@ direction LR
 | 依赖项使用 3 列表格或项目列表 | 改用 2 列表格（依赖名含链接 + 类型） |
 | 属性类型使用 CSM 参数类型（如 `HexStr`、`APIString`） | 属性类型应为 LabVIEW 数据类型（如 `String`、`DBL`、`Boolean`），不需要 CSM 编解码 |
 | 属性与 API 消息接口混淆 | 属性通过 `CSM - Get/Set Module Attribute.vi` 直接读写，不需要发送消息；API 通过消息字符串调用 |
+| 假设属性一定存在而不处理 `Found = FALSE` 的情况 | 属性是可选的，读取时应始终提供合理的默认值，并根据 `Found` 输出决定是否使用默认值 |
 
 ---
 
