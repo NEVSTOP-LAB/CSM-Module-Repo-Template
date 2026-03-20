@@ -37,4 +37,4 @@ CSM 只支持字符串参数，复杂数据需编码：
 2. 仓库中每个 CSM 模块 VI 对应一个同名 `.md` 文件（如 `DataLogger.md`）。
 3. 以 [`module-template.md`](./module-template.md) 为起点填写模块接口文档。
 
-更多详情请参阅 [CSM Wiki](https://nevstop-lab.github.io/CSM-Wiki/) 和 [README(CN).md](./README(CN).md)。
+更多详情请参阅 [CSM Wiki](https://nevstop-lab.github.io/CSM-Wiki/)。

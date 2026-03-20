@@ -67,7 +67,7 @@
 始终在值描述之后用括号注明类型：
 
 ```text
-数据文件夹的完整路径 (Plain String)
+数据文件夹的完整路径 (APIString)
 一维波形数组 (MassData)
 包含配置的簇 (HexStr)
 文件路径 (${FilePath})   ← INI 静态变量
@@ -77,8 +77,8 @@
 
 | 类型 | 备注 |
 | --- | --- |
-| `Plain String` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) |
-| `Safe String` | 内置；特殊字符编码为 `%[HEX]` |
+| `APIString` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) |
+| `SafeStr` | 内置；特殊字符编码为 `%[HEX]` |
 | `HexStr` | 内置；Variant 序列化为十六进制 |
 | `MassData` | 插件；传递 `Start:N,Size:M` |
 | `${变量名}` | 插件；INI 配置变量名 |
