@@ -29,15 +29,14 @@
 
 ## 依赖项
 
-**必须**
-- [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine)
-
-**可选**（根据所用功能选择）
-- [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support)
-- [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)
-- [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support)
-- [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin)
-- [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App)
+| 依赖 | 类型 |
+| --- | --- |
+| [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) | 必须 |
+| [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) | 可选 |
+| [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) | 可选 |
+| [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) | 可选 |
+| [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) | 可选 |
+| [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) | 可选 |
 
 > 删除不需要的行。
 
@@ -51,15 +50,13 @@
 
 初始化内部资源。必须在其他 API 之前调用。
 
-- **调用方式**：异步 (`->`)
-- **参数**：`APIString` — 配置文件路径
+- **参数**：`APIString` — `String`：配置文件路径
 - **响应**：N/A
 
 ### `API: Start`
 
 启动模块的主要操作。
 
-- **调用方式**：异步 (`->`)
 - **参数**：N/A
 - **响应**：N/A
 
@@ -67,7 +64,6 @@
 
 优雅地停止主要操作。
 
-- **调用方式**：异步 (`->`)
 - **参数**：N/A
 - **响应**：N/A
 
@@ -75,25 +71,24 @@
 
 [描述]
 
-- **调用方式**：异步 (`->`)
-- **参数**：`HexStr` — 配置簇
+- **参数**：`HexStr` — `Cluster`：
+  - `[字段名]`：[类型，例如 Boolean]
+  - `[字段名]`：[类型，例如 DBL]
 - **响应**：N/A
 
 ### `API: [示例：传递大块数据]`
 
 [描述]
 
-- **调用方式**：异步 (`->`)
-- **参数**：`MassData` — 一维波形数组
+- **参数**：`MassData` — `Waveform[]`：一维波形数组
 - **响应**：N/A
 
 ### `API: Get Status`
 
 查询当前状态。
 
-- **调用方式**：同步 (`-@`)
 - **参数**：N/A
-- **响应**：`APIString` — 状态描述
+- **响应**：`APIString` — `String`：状态描述
 
 > 根据需要增减段落。请记录每一个对外可调用的 `API:` 消息。
 
@@ -119,7 +114,8 @@
 
 [发生了什么 / 哪些数据已就绪]
 
-- **参数**：`HexStr` — 数据内容
+- **参数**：`HexStr` — `Cluster`：
+  - `[字段名]`：[类型，例如 DBL]
 
 ### `[状态名称 B]`
 
@@ -127,7 +123,7 @@
 
 [错误或需要立即处理的中断事件描述]
 
-- **参数**：`APIString` — 错误信息
+- **参数**：`APIString` — `String`：错误信息
 
 > - 使用 **`Status`** 表示正常的、预期中的状态转换。
 > - 使用 **`Interrupt`** 表示需要立即关注的错误或事件。
