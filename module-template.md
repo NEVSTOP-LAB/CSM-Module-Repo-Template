@@ -21,7 +21,10 @@
 | 依赖 | 类型 | 链接 |
 | --- | --- | --- |
 | Communicable State Machine (CSM) | 必须 | [GitHub](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) |
-| [例如：CSM MassData Parameter Support] | 必须 / 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| CSM API String Arguments Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
+| CSM MassData Parameter Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| CSM INI Static Variable Support | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
+| CSM Mermaid Plugin | 可选 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) |
 
 > 删除不需要的行。
 
@@ -33,23 +36,24 @@
 
 | API | 描述 | 参数 | 响应 |
 | --- | --- | --- | --- |
-| `API: Initialize` | 初始化内部资源。必须在其他 API 之前调用。 | 配置文件路径 `(Plain String)` | N/A |
+| `API: Initialize` | 初始化内部资源。必须在其他 API 之前调用。 | 配置文件路径 `(APIString)` | N/A |
 | `API: Start` | 启动模块的主要操作。 | N/A | N/A |
 | `API: Stop` | 优雅地停止主要操作。 | N/A | N/A |
-| `API: Update Settings` | 在不重启的情况下更新运行时配置。 | 配置字符串或路径 `(Plain String)` | N/A |
-| `API: Get Status` | 同步查询当前状态。 | N/A | 状态描述 `(Plain String)` |
+| `API: [示例：传递结构体数据]` | [描述] | 配置簇 `(HexStr)` | N/A |
+| `API: [示例：传递大块数据]` | [描述] | 一维波形数组 `(MassData)` | N/A |
+| `API: Get Status` | 查询当前状态。 | N/A | 状态描述 `(APIString)` |
 
 > 根据需要增减行。请记录每一个对外可调用的 `API:` 消息。
 
 ### 参数类型说明
 
-| 类型 | 说明 |
-| --- | --- |
-| `Plain String` | 需要 [CSM API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) 插件 |
-| `Safe String` | 内置；特殊字符编码为 `%[HEXCODE]` |
-| `HexStr` | 内置；数据转换为 Variant 再转十六进制字符串 |
-| `MassData` | 插件；内存映射缓冲区，传递 `Start:N,Size:M`；需要 [MassData 插件](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
-| `${变量名}` | 插件；INI 配置变量；需要 [INI 静态变量插件](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
+| 类型 | 说明 | 链接 |
+| --- | --- | --- |
+| `APIString` | 支持嵌套键值对的纯文本字符串，需要 CSM API String Arguments Support 插件 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
+| 用户自定义 | 由模块自行解析的字符串，无需额外插件 | — |
+| `HexStr` | 将 LabVIEW Variant 序列化为十六进制字符串，内置支持 | — |
+| `SafeStr` | 将特殊字符编码为 `%[HEXCODE]`，内置支持 | — |
+| `MassData` | 内存映射缓冲区，传递 `Start:N,Size:M`，需要 CSM MassData Parameter Support 插件 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
 
 ---
 
@@ -59,8 +63,8 @@
 
 | 状态 | 广播类型 | 描述 | 参数 |
 | --- | --- | --- | --- |
-| `[状态名称 A]` | `Status` | [发生了什么 / 哪些数据已就绪] | [类型与格式] |
-| `[状态名称 B]` | `Interrupt` | [错误或需要立即处理的中断事件描述] | 错误信息 `(Plain String)` |
+| `[状态名称 A]` | `Status` | [发生了什么 / 哪些数据已就绪] | 数据 `(HexStr)` |
+| `[状态名称 B]` | `Interrupt` | [错误或需要立即处理的中断事件描述] | 错误信息 `(APIString)` |
 
 > - 使用 **`Status`** 表示正常的、预期中的状态转换。
 > - 使用 **`Interrupt`** 表示需要立即关注的错误或事件。
@@ -70,15 +74,15 @@
 
 ## 配置说明
 
-### 前面板参数
+> 推荐使用 [CSM INI Static Variable Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) 管理配置参数，通过 `${变量名}` 语法在消息中直接引用 INI 键值。
 
-| 控件名称 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| `[控件名称]` | [LabVIEW 类型] | [默认值] | [配置作用] |
+### 前面板参数（可选）
+
+| 控件名称 | 默认值 | 说明 |
+| --- | --- | --- |
+| `[控件名称]` | [默认值] | [配置作用] |
 
 ### INI 文件配置
-
-如果模块读取 INI 文件，在此处记录节名和键值。
 
 ```ini
 [[模块名称]]
@@ -124,27 +128,6 @@ API: Stop -> [模块名称]
 // 取消订阅
 [状态名称 A]@[模块名称] >> API:On[状态名称 A]@[处理模块] -><unregister>
 ```
-
-### 同步调用
-
-```text
-// 同步查询当前状态（调用方等待响应）
-API: Get Status -@ [模块名称]
-```
-
----
-
-## 模块交互图
-
-```mermaid
-stateDiagram-v2
-direction LR
-[模块名称] --> [消费模块] : "[状态名称 A] >> API:Handler"
-[调用模块] --> [模块名称] : "API: Start"
-[调用模块] --> [模块名称] : "API: Stop"
-```
-
-> 根据实际模块交互关系更新或删除此图。
 
 ---
 
