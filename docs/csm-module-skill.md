@@ -1,273 +1,272 @@
-# CSM Module Documentation — AI Skill Guide
+# CSM 模块文档编写规范 — AI 技能文档
 
-> **Purpose**: This document is a structured skill guide for AI assistants (e.g., GitHub Copilot, ChatGPT). It encodes all rules, conventions, and examples needed to **read**, **write**, and **validate** CSM module interface documentation automatically.
-
----
-
-## 1. Background: What is a CSM Module?
-
-A **CSM (Communicable State Machine) module** is a self-contained LabVIEW VI that implements the CSM framework pattern. Key characteristics:
-
-- It is a **state machine** with named case branches (states).
-- It communicates with other modules exclusively through **message strings**.
-- It can **receive** messages (API calls) and **emit** messages (status broadcasts).
-- It is designed to be reusable and independently testable.
-
-Reference: <https://nevstop-lab.github.io/CSM-Wiki/>
+> **目的**：本文档是面向 AI 助手（如 GitHub Copilot、ChatGPT）的结构化技能指南。它编码了**读取**、**编写**和**验证** CSM 模块接口文档所需的全部规则、约定和示例，使 AI 能够自动完成这些工作。
 
 ---
 
-## 2. Documentation File Convention
+## 1. 背景：什么是 CSM 模块？
 
-| Rule | Details |
+**CSM（可通信状态机，Communicable State Machine）模块**是一个实现了 CSM 框架模式的独立 LabVIEW VI。核心特征：
+
+- 它是一个具有命名 case 分支（状态）的**状态机**。
+- 它完全通过**消息字符串**与其他模块通信。
+- 它可以**接收**消息（API 调用）和**发出**消息（状态广播）。
+- 它被设计为可复用且可独立测试。
+
+参考：<https://nevstop-lab.github.io/CSM-Wiki/>
+
+---
+
+## 2. 文档文件约定
+
+| 规则 | 详细说明 |
 | --- | --- |
-| **One doc per module** | Each module VI named `Foo` must have a companion file `Foo.md` in the same repository. |
-| **File naming** | Same name as the module, `.md` extension. Spaces allowed if the VI name uses them. |
-| **Bilingual** | English primary (`Foo.md`), Chinese secondary (`Foo(CN).md`) when both are maintained. |
-| **Template** | Start from [`module-template.md`](../module-template.md). |
+| **每个模块一个文档** | 名为 `Foo` 的模块 VI 必须在同一仓库中有对应的 `Foo.md` 文件。 |
+| **文件命名** | 与模块同名，扩展名为 `.md`。如果 VI 名称包含空格，文件名也可以包含空格。 |
+| **模板** | 从 [`module-template.md`](../module-template.md) 开始填写。 |
 
 ---
 
-## 3. Required Sections in Every Module Doc
+## 3. 每个模块文档的必要章节
 
-When writing or generating a module documentation file, always include the following sections (mark N/A or remove only when explicitly noted as optional):
+编写或生成模块文档时，始终包含以下章节（仅在明确标注为可选时才可省略）：
 
-| Section | Required | Description |
+| 章节 | 是否必须 | 说明 |
 | --- | --- | --- |
-| **Brief Description** | ✅ Required | 1–3 sentences. What does the module do? |
-| **Dependencies** | ✅ Required | CSM core + any add-ons needed |
-| **API Interface** | ✅ Required | All `API:` messages the module accepts |
-| **Status Broadcast Interface** | ✅ if module emits anything | All `Status`/`Interrupt` broadcasts |
-| **Configuration** | ✅ if configurable | Front panel controls and/or INI keys |
-| **Usage Constraints** | ✅ Required | Initialization order, singleton rules, etc. |
-| **Usage Examples** | ✅ Required | At least one concrete message-string example |
-| **Module Interaction Diagram** | Optional | Mermaid `stateDiagram-v2` showing message flows |
-| **Notes** | Optional | Implementation notes and known limitations |
+| **功能简述** | ✅ 必须 | 1～3 句话。模块做什么？ |
+| **依赖项** | ✅ 必须 | CSM 核心框架 + 所需插件 |
+| **API 接口** | ✅ 必须 | 模块接受的所有 `API:` 消息 |
+| **状态广播接口** | ✅ 如果模块有广播 | 所有 `Status`/`Interrupt` 广播 |
+| **配置说明** | ✅ 如果可配置 | 前面板控件和/或 INI 键值 |
+| **调用限制与注意事项** | ✅ 必须 | 初始化顺序、单例规则等 |
+| **使用示例** | ✅ 必须 | 至少一个具体的消息字符串示例 |
+| **模块交互图** | 可选 | 展示消息流的 Mermaid `stateDiagram-v2` |
+| **备注** | 可选 | 实现说明和已知限制 |
 
 ---
 
-## 4. API Interface Rules
+## 4. API 接口规则
 
-### 4.1 What counts as an "API"?
+### 4.1 什么算作"API"？
 
-- Any case branch named with the prefix `API:` (e.g., `API: Start`, `API: Log`).
-- Do **not** document internal states (`Initialize`, `Idle`, `Error Handler`, etc.) as API unless they are intentionally public.
+- 任何以 `API:` 为前缀命名的 case 分支（例如 `API: Start`、`API: Log`）。
+- **不要**将内部状态（`Initialize`、`Idle`、`Error Handler` 等）记录为 API，除非它们是有意公开的。
 
-### 4.2 Table columns
+### 4.2 表格列说明
 
-| Column | What to write |
+| 列 | 填写内容 |
 | --- | --- |
-| **API** | Exact message string including prefix, e.g., `` `API: Start` `` |
-| **Description** | One sentence describing what the API does |
-| **Arguments** | Data passed after `>>`. State the type explicitly. Write `N/A` if none. |
-| **Response** | What the module sends back. Write `N/A` if none or async fire-and-forget. |
+| **API** | 完整消息字符串，包含前缀，例如 `` `API: Start` `` |
+| **描述** | 一句话说明该 API 的作用 |
+| **参数** | `>>` 之后传递的数据，明确注明类型。无参数时写 `N/A`。 |
+| **响应** | 模块返回的内容。无响应或异步调用时写 `N/A`。 |
 
-### 4.3 Argument type notation
+### 4.3 参数类型标注规范
 
-Always write the type in parentheses after the value description:
-
-```
-Full path of data folder (Plain String)
-1D Waveform array (MassData)
-Cluster with settings (HexStr)
-File path (${FilePath})   ← INI Static Variable
-```
-
-Supported types:
-
-| Type | Notes |
-| --- | --- |
-| `Plain String` | Requires [CSM API String Arguments add-on](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) |
-| `Safe String` | Built-in; special chars encoded as `%[HEX]` |
-| `HexStr` | Built-in; Variant serialized to hex |
-| `MassData` | Add-on; pass `Start:N,Size:M` |
-| `${variable}` | Add-on; INI-backed variable name |
-
----
-
-## 5. Status Broadcast Interface Rules
-
-### 5.1 Status vs. Interrupt
-
-| Broadcast type | When to use |
-| --- | --- |
-| `Status` | Normal, expected state transitions (e.g., "Acquired Waveform", "Logging Complete") |
-| `Interrupt` | Errors, warnings, or events needing immediate attention |
-
-### 5.2 Table columns
-
-| Column | What to write |
-| --- | --- |
-| **Status** | Exact status string, e.g., `` `Acquired Waveform` `` |
-| **Broadcast Type** | `Status` or `Interrupt` |
-| **Description** | One sentence describing when this broadcast occurs |
-| **Arguments** | Data passed with the broadcast; include type notation. Write `N/A` if none. |
-
-### 5.3 Subscription syntax example
+始终在值描述之后用括号注明类型：
 
 ```text
-// Register: route MyModule's "Acquired Waveform" into Processor's "API: Process"
+数据文件夹的完整路径 (Plain String)
+一维波形数组 (MassData)
+包含配置的簇 (HexStr)
+文件路径 (${FilePath})   ← INI 静态变量
+```
+
+支持的类型：
+
+| 类型 | 备注 |
+| --- | --- |
+| `Plain String` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arugments-Support) |
+| `Safe String` | 内置；特殊字符编码为 `%[HEX]` |
+| `HexStr` | 内置；Variant 序列化为十六进制 |
+| `MassData` | 插件；传递 `Start:N,Size:M` |
+| `${变量名}` | 插件；INI 配置变量名 |
+
+---
+
+## 5. 状态广播接口规则
+
+### 5.1 Status 与 Interrupt 的区别
+
+| 广播类型 | 使用场景 |
+| --- | --- |
+| `Status` | 正常的、预期中的状态转换（例如"Acquired Waveform"、"Logging Complete"） |
+| `Interrupt` | 需要立即处理的错误、警告或事件 |
+
+### 5.2 表格列说明
+
+| 列 | 填写内容 |
+| --- | --- |
+| **状态** | 精确的状态字符串，例如 `` `Acquired Waveform` `` |
+| **广播类型** | `Status` 或 `Interrupt` |
+| **描述** | 一句话说明该广播何时发出 |
+| **参数** | 广播携带的数据，包含类型标注。无参数时写 `N/A`。 |
+
+### 5.3 订阅语法示例
+
+```text
+// 注册：将 MyModule 的 "Acquired Waveform" 路由到 Processor 的 "API: Process"
 Acquired Waveform@MyModule >> API: Process@Processor -><register>
 
-// Unregister
+// 取消注册
 Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
 ```
 
 ---
 
-## 6. Configuration Rules
+## 6. 配置说明规则
 
-### 6.1 Front panel controls
+### 6.1 前面板控件
 
-List every front-panel control that affects module behavior (not just cosmetic indicators). Include:
-- Control name (as labeled on the front panel)
-- LabVIEW data type
-- Default value
-- Effect on behavior
+列出每一个影响模块行为的前面板控件（不包括纯显示指示器）。包含：
+- 控件名称（与前面板标签一致）
+- LabVIEW 数据类型
+- 默认值
+- 对行为的影响
 
-### 6.2 INI file keys
+### 6.2 INI 文件键值
 
-If the module reads an INI file, document:
-- INI section header (usually the module name)
-- Key names, default values, and descriptions
+如果模块读取 INI 文件，记录：
+- INI 节名（通常为模块名称）
+- 键名、默认值和说明
 
 ```ini
-[ModuleName]
-OutputFolder  = C:\Data   ; Root folder for output files
-MaxRetries    = 3         ; Number of retries on error
+[模块名称]
+OutputFolder  = C:\Data   ; 输出文件的根目录
+MaxRetries    = 3         ; 出错后的重试次数
 ```
 
 ---
 
-## 7. CSM Message Syntax Reference
+## 7. CSM 消息语法参考
 
 ```text
-// Local state (internal only, not externally callable)
-DoSomething >> argument
+// 本地状态（仅内部使用，不对外调用）
+DoSomething >> 参数
 
-// Async call — fire and forget
-API: Start -> TargetModule
+// 异步调用——发出后不等待
+API: Start -> 目标模块
 
-// Async call with argument
-API: Configure >> argument -> TargetModule
+// 带参数的异步调用
+API: Configure >> 参数 -> 目标模块
 
-// Async call, explicitly no reply
-API: Log >> data ->| TargetModule
+// 无应答异步调用
+API: Log >> 数据 ->| 目标模块
 
-// Sync call — caller waits for response
-API: GetValue -@ TargetModule
+// 同步调用——调用方等待响应
+API: GetValue -@ 目标模块
 
-// Broadcast normal status to all subscribers
-Status >> data -><status>
+// 向所有订阅者广播正常状态
+Status >> 数据 -><status>
 
-// Broadcast interrupt to all subscribers
-Error >> message -><interrupt>
+// 向所有订阅者广播中断状态
+Error >> 消息 -><interrupt>
 
-// Subscribe: link Src's status to Handler's API
-Status@SourceModule >> API:Handler@HandlerModule -><register>
+// 订阅：将源模块的状态链接到处理模块的 API
+Status@源模块 >> API:Handler@处理模块 -><register>
 
-// Subscribe: treat Src's status as interrupt in Handler
-Status@SourceModule >> API:Handler@HandlerModule -><register as Interrupt>
+// 订阅：将源模块的状态作为中断路由到处理模块
+Status@源模块 >> API:Handler@处理模块 -><register as Interrupt>
 
-// Unsubscribe
-Status@SourceModule >> API:Handler@HandlerModule -><unregister>
+// 取消订阅
+Status@源模块 >> API:Handler@处理模块 -><unregister>
 ```
 
-Full syntax: <https://github.com/NEVSTOP-LAB/Communicable-State-Machine/blob/main/.doc/Syntax.md>
+完整语法：<https://github.com/NEVSTOP-LAB/Communicable-State-Machine/blob/main/.doc/Syntax.md>
 
 ---
 
-## 8. Writing Usage Examples — Rules
+## 8. 编写使用示例的规则
 
-1. **Use the module's actual runtime name** (the string argument passed when launching the module VI), not the VI file name. Note this in the example preamble.
-2. Show at minimum:
-   - The startup sequence (`Initialize` → `Start`)
-   - At least one data-passing call
-   - The shutdown sequence (`Stop`)
-   - A subscription example (if the module broadcasts status)
-3. Use comments (`//`) to annotate each step.
-4. Wrap in a `text` code fence.
+1. 使用模块的**实际运行时名称**（启动模块 VI 时传入的字符串），而非 VI 文件名。在示例前说明这一点。
+2. 至少展示：
+   - 启动序列（`Initialize` → `Start`）
+   - 至少一个传递数据的调用
+   - 关闭序列（`Stop`）
+   - 订阅示例（如果模块广播状态）
+3. 用注释（`//`）标注每一步。
+4. 使用 `text` 代码围栏包裹。
 
-**Example:**
+**示例：**
 
 ```text
-// Suppose the module is launched with name "Logging"
+// 假设模块以名称 "Logging" 启动
 
-// 1. Configure the output folder
+// 1. 配置输出文件夹
 API: Update Settings >> C:\Data -> Logging
 
-// 2. Start logging
+// 2. 开始记录
 API: Start -> Logging
 
-// 3. Log a waveform (MassData parameter format)
+// 3. 记录一段波形数据（MassData 参数格式）
 API: Log >> MassData-Start:89012,Size:1156 -> Logging
 
-// 4. Stop logging
+// 4. 停止记录
 API: Stop -> Logging
 ```
 
 ---
 
-## 9. Module Interaction Diagram — Rules
+## 9. 模块交互图规则
 
-Use [Mermaid](https://mermaid.js.org/) `stateDiagram-v2` with `direction LR` to show inter-module message flows.
+使用 [Mermaid](https://mermaid.js.org/) `stateDiagram-v2`，方向设为 `direction LR`，展示模块间消息流。
 
 ```mermaid
 stateDiagram-v2
 direction LR
-SourceModule --> ConsumerModule : "StatusBroadcast >> API:Handler"
-CallerModule  --> TargetModule  : "API: Start"
-CallerModule  --> TargetModule  : "API: Stop"
+源模块 --> 消费模块 : "状态广播 >> API:Handler"
+调用模块 --> 目标模块 : "API: Start"
+调用模块 --> 目标模块 : "API: Stop"
 ```
 
-Rules:
-- Each arrow label is the **forwarded message string** (the full state string that the consumer receives).
-- Show only external-facing communications; omit internal states.
+规则：
+- 每个箭头标签是**转发的消息字符串**（消费者实际收到的完整状态字符串）。
+- 只展示对外可见的通信；省略内部状态。
 
 ---
 
-## 10. AI Generation Checklist
+## 10. AI 生成检查清单
 
-When generating a module documentation file from source code or a description, verify:
+生成模块文档文件时，逐项验证：
 
-- [ ] File is named to match the module VI name.
-- [ ] Brief Description answers "what does this module do?" in ≤ 3 sentences.
-- [ ] Every `API:` case branch is listed in the API table.
-- [ ] Argument types use the standard notation (e.g., `(Plain String)`, `(MassData)`).
-- [ ] All `Status`/`Interrupt` broadcasts are listed in the Status table.
-- [ ] Broadcast type is explicitly `Status` or `Interrupt` for each row.
-- [ ] Configuration section covers all front-panel controls and INI keys.
-- [ ] Usage Constraints includes initialization order and any singleton rules.
-- [ ] At least one usage example with comments is included.
-- [ ] All message strings in examples match the exact syntax: `API: Xxx >> args -> ModuleName`.
-- [ ] Subscription example uses `-><register>` syntax correctly.
-- [ ] Optional: Mermaid interaction diagram is present and syntactically correct.
+- [ ] 文件名与模块 VI 名称一致。
+- [ ] 功能简述在 ≤ 3 句话内回答"这个模块做什么？"。
+- [ ] 每一个 `API:` case 分支都列在 API 表中。
+- [ ] 参数类型使用标准标注格式（例如 `(Plain String)`、`(MassData)`）。
+- [ ] 所有 `Status`/`Interrupt` 广播都列在状态广播表中。
+- [ ] 每行明确标注广播类型为 `Status` 或 `Interrupt`。
+- [ ] 配置说明涵盖所有前面板控件和 INI 键值。
+- [ ] 调用限制说明包含初始化顺序和任何单例规则。
+- [ ] 至少包含一个带注释的使用示例。
+- [ ] 示例中所有消息字符串符合精确语法：`API: Xxx >> 参数 -> 模块名称`。
+- [ ] 订阅示例正确使用 `-><register>` 语法。
+- [ ] 可选：Mermaid 交互图存在且语法正确。
 
 ---
 
-## 11. Common Mistakes to Avoid
+## 11. 常见错误对照表
 
-| Mistake | Correct approach |
+| 错误 | 正确做法 |
 | --- | --- |
-| Documenting internal states as API | Only document `API:` prefixed cases |
-| Omitting argument type | Always write `(Type)` in the Arguments column |
-| Using wrong arrow for sync vs. async | Sync: `-@`, async: `->`, no-reply: `->|` |
-| Forgetting `@ModuleName` in subscription | Always use `Status@Source >> API:Handler@Dest -><register>` |
-| Missing N/A in empty cells | Write `N/A` explicitly when there are no arguments or no response |
-| Using VI file name instead of runtime module name | Module name is the string used when launching; document this distinction |
+| 将内部状态记录为 API | 只记录以 `API:` 为前缀的 case |
+| 省略参数类型 | 始终在参数列写 `(类型)` |
+| 同步/异步箭头用错 | 同步：`-@`，异步：`->`，无应答：`->|` |
+| 订阅时忘写 `@模块名` | 始终使用 `Status@源模块 >> API:Handler@目标模块 -><register>` |
+| 空单元格不写 N/A | 无参数或无响应时明确写 `N/A` |
+| 使用 VI 文件名代替运行时模块名 | 模块名是启动时传入的字符串；在文档中说明这一区别 |
 
 ---
 
-## 12. Real-World Example Reference
+## 12. 真实示例参考
 
-For a complete, production-quality example of this documentation pattern, see:
+关于此文档模式的完整生产级示例，请参阅：
 
-- [`CSM-Continuous-Measurement-and-Logging` README (English)](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README.md)
-- [`CSM-Continuous-Measurement-and-Logging` README (Chinese)](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README(CN).md)
+- [`CSM-Continuous-Measurement-and-Logging` README（英文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README.md)
+- [`CSM-Continuous-Measurement-and-Logging` README（中文）](https://github.com/NEVSTOP-LAB/CSM-Continuous-Meausrement-and-Logging/blob/main/README(CN).md)
 
-That example documents three modules (`Logging Module`, `Acquisition Module`, `Algorithm Module`) with API tables, Status tables, and usage examples — exactly the pattern this skill encodes.
+该示例记录了三个模块（`Logging Module`、`Acquisition Module`、`Algorithm Module`），包含 API 表、状态表和使用示例——正是本技能文档所编码的模式。
 
 ---
 
-*CSM Wiki: <https://nevstop-lab.github.io/CSM-Wiki/>*
-*CSM Core: <https://github.com/NEVSTOP-LAB/Communicable-State-Machine>*
+*CSM Wiki：<https://nevstop-lab.github.io/CSM-Wiki/>*  
+*CSM 核心框架：<https://github.com/NEVSTOP-LAB/Communicable-State-Machine>*
