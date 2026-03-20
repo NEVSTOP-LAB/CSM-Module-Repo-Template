@@ -131,6 +131,33 @@
 
 ---
 
+## 属性接口
+
+以下是本模块对外暴露的属性，可通过 `CSM - Get Module Attribute.vi` 和 `CSM - Set Module Attribute.vi` 直接读写，无需发送消息。
+
+> - 属性的参数类型为 **LabVIEW 数据类型**，不是 CSM 的参数类型（如 `APIString`、`HexStr` 等）。
+> - 推荐只使用简单数据类型（如 `String`、`Boolean`、`DBL`、`I32` 等）作为属性类型。
+
+### `[属性名称 A]`
+
+[属性说明，例如：当前采样速率，单位 Hz]
+
+- **类型**：`[LabVIEW 数据类型，例如 DBL]`
+- **访问方式**：[读写 / 只读]
+- **默认值**：[默认值，若无则写 N/A]
+
+### `[属性名称 B]`
+
+[属性说明，例如：是否启用调试模式]
+
+- **类型**：`[LabVIEW 数据类型，例如 Boolean]`
+- **访问方式**：[读写 / 只读]
+- **默认值**：[默认值，若无则写 N/A]
+
+> 根据需要增减段落。如果模块没有对外暴露的属性，请删除本章节。
+
+---
+
 ## 配置说明
 
 > 推荐使用 [CSM INI Static Variable Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) 管理配置参数，通过 `${变量名}` 语法在消息中直接引用 INI 键值。
