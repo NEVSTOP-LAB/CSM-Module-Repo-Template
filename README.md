@@ -4,7 +4,7 @@
 
 ## 创建 CSM 模块
 
-一个可复用的 CSM 模块需要做好两件事：**提供外部接口（API）** 和 **发布状态变化（Status / Interrupt）**。
+一个可复用的 CSM 模块通常需要做好以下几件事：**提供外部接口（API）**、**发布状态变化（Status / Interrupt）**，以及视需要**暴露属性接口（Attribute）**。
 
 ### 设计要点
 
@@ -37,7 +37,7 @@ CSM 消息接口只支持字符串参数，复杂数据需编码：
 ### 使用本模板
 
 1. 点击 **"Use this template"** 创建你的模块仓库，并以模块名命名（如 `CSM-DataLogger`）。
-2. 仓库中每个 CSM 模块 VI 对应一个同名 `.md` 文件（如 `DataLogger.md`）。
-3. 以 [`module-template.md`](./module-template.md) 为起点填写模块接口文档。
+2. 复制 [`module-template.md`](./module-template.md)，并重命名为与模块 VI 同名的文件（如 `DataLogger.md`）——仓库中每个 CSM 模块 VI 都应有一份对应的接口文档。
+3. 按模板说明替换占位符，填写接口文档。
 
 更多详情请参阅 [CSM Wiki](https://nevstop-lab.github.io/CSM-Wiki/)。
