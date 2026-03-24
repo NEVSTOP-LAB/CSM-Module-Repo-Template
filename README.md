@@ -1,6 +1,6 @@
 # CSM-Module-Repo-Template
 
-基于 [CSM（可通信状态机）](https://nevstop-lab.github.io/CSM-Wiki/) 框架的模块仓库模板。使用本模板可快速搭建一个符合规范的 CSM 可复用模块仓库。
+基于 [CSM（可通信状态机）](https://nevstop-lab.github.io/CSM-Wiki/) 框架的模块仓库模板。主要参考如何通过文档描述 CSM 模块, 及根据文档实现具体的模块开发。
 
 ## 创建 CSM 模块
 
@@ -17,9 +17,9 @@
 
 | 接口类型 | 说明 |
 | --- | --- |
-| **消息接口（API）** | 以 `API:` 为前缀的 case 分支，或其他对外公开的非内置 case 分支 |
-| **广播接口（Status）** | 模块内部状态变化时发出的 `Status`（普通）或 `Interrupt`（高优先级）广播 |
-| **属性接口（Attribute）** | 可通过 `CSM - Get/Set Module Attribute.vi` 直接读写的配置数据，使用 LabVIEW 数据类型（非 CSM 参数类型） |
+| **消息接口<br/>API** | 以 `API:` 为前缀的 case 分支，或其他对外公开的非内置 case 分支 |
+| **广播接口<br/>Broadcast** | 模块内部状态变化时发出的 `Status`（普通）或 `Interrupt`（高优先级）广播 |
+| **属性接口<br/>Attribute** | 可通过 `CSM - Get/Set Module Attribute.vi` 直接读写的配置数据，使用 LabVIEW 数据类型（非 CSM 参数类型） |
 
 ### 参数传递
 
@@ -27,10 +27,12 @@ CSM 消息接口只支持字符串参数，复杂数据需编码：
 
 | 类型 | 说明 |
 | --- | --- |
-| 纯字符串 / `APIString` | 直接传递，或使用 [API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) 插件支持键值对 |
+| `APIString` | 直接传递，或使用 [API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) 插件支持键值对 |
 | `SafeStr` | 含特殊字符的字符串，编码为 `%[HEXCODE]` |
 | `HexStr` | 任意 LabVIEW 数据序列化为十六进制字符串 |
 | `MassData` | 大数组/波形，通过内存映射缓冲区高效传递；需要 [MassData 插件](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| `用户自定义` | 自定义的字符串格式，大多数情况下， APIString 可以覆盖此类情况 |
+
 
 **注意**：属性接口（Attribute）与 API 消息接口不同，直接使用 LabVIEW 数据类型（如 `String`、`Boolean`、`DBL`），无需编解码。
 
