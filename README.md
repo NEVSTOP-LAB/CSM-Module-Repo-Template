@@ -1,16 +1,16 @@
 # CSM-Module-Repo-Template
 
-基于 [CSM（可通信状态机）](https://nevstop-lab.github.io/CSM-Wiki/) 框架的模块仓库模板。主要参考如何通过文档描述 CSM 模块, 及根据文档实现具体的模块开发。
+基于 [CSM（可通信状态机）](https://nevstop-lab.github.io/CSM-Wiki/) 框架的模块仓库模板，用于参考如何编写 CSM 模块接口文档并完成模块开发。
 
 ## 创建 CSM 模块
 
-一个可复用的 CSM 模块通常需要做好以下几件事：**提供外部接口（API）**、**发布状态变化（Status / Interrupt）**，以及视需要**暴露属性接口（Attribute）**。
+一个可复用的 CSM 模块需要：**提供消息接口（API）**、**发布状态变化（Status / Interrupt）**，以及按需**暴露属性接口（Attribute）**。
 
 ### 设计要点
 
 - **单一职责**：一个模块只负责一件事（如采集、存储、通信）。
 - **接口清晰**：用 `API:` 前缀标识对外接口，名称语义化（如 `API: Start`、`API: LoadConfig`）。
-- **模块解耦**：不在代码中硬编码其他模块名称；通过广播/订阅机制解耦模块间依赖。
+- **模块解耦**：通过广播/订阅机制传递状态，避免在代码中硬编码其他模块名称。
 - **错误处理**：实现 `Error Handler` 状态，出错时发出 `Error Occurred` 广播通知外部。
 
 ### 接口约定
@@ -19,7 +19,7 @@
 | --- | --- |
 | **消息接口<br/>API** | 以 `API:` 为前缀的 case 分支，或其他对外公开的非内置 case 分支 |
 | **广播接口<br/>Broadcast** | 模块内部状态变化时发出的 `Status`（普通）或 `Interrupt`（高优先级）广播 |
-| **属性接口<br/>Attribute** | 可通过 `CSM - Get/Set Module Attribute.vi` 直接读写的配置数据，使用 LabVIEW 数据类型（非 CSM 参数类型） |
+| **属性接口<br/>Attribute** | 可通过 `CSM - Get/Set Module Attribute.vi` 直接读写；使用 LabVIEW 原生数据类型（`String`、`Boolean`、`DBL` 等），而非 CSM 参数类型 |
 
 ### 参数传递
 
@@ -27,19 +27,16 @@ CSM 消息接口只支持字符串参数，复杂数据需编码：
 
 | 类型 | 说明 |
 | --- | --- |
-| `APIString` | 直接传递，或使用 [API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) 插件支持键值对 |
+| `APIString` | 纯文本字符串，支持键值对；可使用 [API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) 插件 |
 | `SafeStr` | 含特殊字符的字符串，编码为 `%[HEXCODE]` |
 | `HexStr` | 任意 LabVIEW 数据序列化为十六进制字符串 |
 | `MassData` | 大数组/波形，通过内存映射缓冲区高效传递；需要 [MassData 插件](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
-| `用户自定义` | 自定义的字符串格式，大多数情况下， APIString 可以覆盖此类情况 |
-
-
-**注意**：属性接口（Attribute）与 API 消息接口不同，直接使用 LabVIEW 数据类型（如 `String`、`Boolean`、`DBL`），无需编解码。
+| `用户自定义` | 自定义字符串格式；多数场景下 `APIString` 可满足需求 |
 
 ### 使用本模板
 
-1. 点击 **"Use this template"** 创建你的模块仓库，并以模块名命名（如 `CSM-DataLogger`）。
-2. 复制 [`module-template.md`](./module-template.md)，并重命名为与模块 VI 同名的文件（如 `DataLogger.md`）——仓库中每个 CSM 模块 VI 都应有一份对应的接口文档。
+1. 点击 **"Use this template"** 创建模块仓库，并以模块名命名（如 `CSM-DataLogger`）。
+2. 复制 [`module-template.md`](./module-template.md)，将其重命名为与模块 VI 同名的文件（如 `DataLogger.md`）；每个模块 VI 都应有一份对应的接口文档。
 3. 按模板说明替换占位符，填写接口文档。
 
 更多详情请参阅 [CSM Wiki](https://nevstop-lab.github.io/CSM-Wiki/)。
