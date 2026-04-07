@@ -1,6 +1,7 @@
 # `[模块名称]` — CSM 模块接口文档
 
 > **使用说明**
+>
 > 1. 复制本文件并将其重命名为你的模块名（例如 `DataLogger.md`）。
 > 2. 将所有 `[占位符]` 替换为实际内容。
 > 3. 删除不适用的章节。
@@ -19,26 +20,26 @@
 
 ## 模块信息
 
-| 属性 | 值 |
-| --- | --- |
-| LabVIEW 版本 | ≥ [版本号，例如 2019] |
-| 支持的操作系统 | [Windows / Linux / macOS] |
-| 支持 RT | [✅ 支持 / ❌ 不支持] |
-| 支持 64-bit | [✅ 支持 / ❌ 不支持] |
-| 所属模块组 | [lvlib/lvlibp 名称，若不属于任何模块组则填 N/A] |
+| 属性           | 值                                              |
+| -------------- | ----------------------------------------------- |
+| LabVIEW 版本   | ≥ [版本号，例如 2019]                           |
+| 支持的操作系统 | [Windows / Linux / macOS]                       |
+| 支持 RT        | [✅ 支持 / ❌ 不支持]                           |
+| 支持 64-bit    | [✅ 支持 / ❌ 不支持]                           |
+| 所属模块组     | [lvlib/lvlibp 名称，若不属于任何模块组则填 N/A] |
 
 ---
 
 ## 依赖项
 
-| 依赖 | 类型 |
-| --- | --- |
-| [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine) | 必须 |
+| 依赖                                                                                                | 类型 |
+| --------------------------------------------------------------------------------------------------- | ---- |
+| [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine)             | 必须 |
 | [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) | 可选 |
-| [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) | 可选 |
-| [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) | 可选 |
-| [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin) | 可选 |
-| [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App) | 可选 |
+| [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)     | 可选 |
+| [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support)   | 可选 |
+| [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin)                             | 可选 |
+| [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App)                             | 可选 |
 
 > 删除不需要的行。
 
@@ -96,13 +97,14 @@
 
 ### 参数类型说明
 
-| 类型 | 说明 | 链接 |
-| --- | --- | --- |
-| `APIString` | 支持嵌套键值对的纯文本字符串，需要 CSM API String Arguments Support 插件 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
-| 用户自定义 | 由模块自行解析的字符串，无需额外插件 | — |
-| `HexStr` | 将 LabVIEW Variant 序列化为十六进制字符串，内置支持 | — |
-| `SafeStr` | 将特殊字符编码为 `%[HEXCODE]`，内置支持 | — |
-| `MassData` | 内存映射缓冲区，传递 `Start:N,Size:M`，需要 CSM MassData Parameter Support 插件 | [GitHub](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| 类型                                                                           | 说明                                                                            |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `HexStr`                                                                       | 将 LabVIEW Variant 序列化为十六进制字符串，内置支持                             |
+| `SafeStr`                                                                      | 将特殊字符编码为 `%[HEXCODE]`，内置支持                                         |
+| `ErrStr`                                                                       | 将错误信息编码为字符串，内置支持                                                |
+| `[APIString](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support)` | 支持嵌套键值对的纯文本字符串，需要 CSM API String Arguments Support 插件        |
+| `[MassData](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)`    | 内存映射缓冲区，传递 `Start:N,Size:M`，需要 CSM MassData Parameter Support 插件 |
+| 用户自定义                                                                     | 由模块自行解析的字符串，无需额外插件                                            |
 
 ---
 
@@ -169,8 +171,8 @@
 
 ### 前面板参数（可选）
 
-| 控件名称 | 默认值 | 说明 |
-| --- | --- | --- |
+| 控件名称     | 默认值   | 说明       |
+| ------------ | -------- | ---------- |
 | `[控件名称]` | [默认值] | [配置作用] |
 
 ### INI 文件配置
@@ -188,6 +190,7 @@
 ## 调用限制与注意事项
 
 > [!IMPORTANT]
+>
 > - `API: Initialize` **必须**在其他任何 API 之前调用。
 > - 本模块为**单例**——同一时间不可运行多个实例。
 > - [在此添加其他顺序要求、线程安全说明或生命周期约束。]
@@ -229,5 +232,5 @@ API: Stop -> [模块名称]
 
 ---
 
-*完整 CSM 语法参考：<https://github.com/NEVSTOP-LAB/Communicable-State-Machine/blob/main/.doc/Syntax.md>*  
-*CSM Wiki：<https://nevstop-lab.github.io/CSM-Wiki/>*
+- _完整 CSM 语法参考：<https://github.com/NEVSTOP-LAB/Communicable-State-Machine/blob/main/.doc/Syntax.md>_
+- _CSM Wiki：<https://nevstop-lab.github.io/CSM-Wiki/>_
