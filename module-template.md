@@ -97,14 +97,14 @@
 
 ### 参数类型说明
 
-| 类型                                                                           | 说明                                                                            |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| `HexStr`                                                                       | 将 LabVIEW Variant 序列化为十六进制字符串，内置支持                             |
-| `SafeStr`                                                                      | 将特殊字符编码为 `%[HEXCODE]`，内置支持                                         |
-| `ErrStr`                                                                       | 将错误信息编码为字符串，内置支持                                                |
-| `[APIString](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support)` | 支持嵌套键值对的纯文本字符串，需要 CSM API String Arguments Support 插件        |
-| `[MassData](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)`    | 内存映射缓冲区，传递 `Start:N,Size:M`，需要 CSM MassData Parameter Support 插件 |
-| 用户自定义                                                                     | 由模块自行解析的字符串，无需额外插件                                            |
+| 类型        | 说明                                                                            |
+| ----------- | ------------------------------------------------------------------------------- |
+| `HexStr`    | 将 LabVIEW Variant 序列化为十六进制字符串，内置支持                             |
+| `SafeStr`   | 将特殊字符编码为 `%[HEXCODE]`，内置支持                                         |
+| `ErrStr`    | 将错误信息编码为字符串，内置支持                                                |
+| `APIString` | 支持嵌套键值对的纯文本字符串，需要 CSM API String Arguments Support 插件        |
+| `MassData`  | 内存映射缓冲区，传递 `Start:N,Size:M`，需要 CSM MassData Parameter Support 插件 |
+| 用户自定义  | 由模块自行解析的字符串，无需额外插件，但是要说明具体的解析规则和格式            |
 
 ---
 
