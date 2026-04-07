@@ -121,15 +121,37 @@
 `SafeStr`   — `String`：经 %[HEX] 编码的文件路径
 ```
 
+> **注意**：接口文档中对 `String` 类型数据统一使用 `APIString` 标注（而非 `SafeStr`），因为 `SafeStr` 正是 `APIString` 针对 `String` 类型的内部实现。
+
 支持的类型：
 
 | 类型 | 备注 |
 | --- | --- |
-| `APIString` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) |
-| `SafeStr` | 内置；特殊字符编码为 `%[HEX]` |
+| `APIString` | 需要 [CSM API String Arguments 插件](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support)；接口文档中对 `String` 类型数据统一使用此标注，因为 `SafeStr` 是 `APIString` 针对 `String` 类型的内部实现 |
+| `SafeStr` | 内置；特殊字符编码为 `%[HEX]`。**接口文档中不直接使用 `SafeStr` 标注，统一改用 `APIString`** |
 | `HexStr` | 内置；Variant 序列化为十六进制 |
 | `MassData` | 插件；传递 `Start:N,Size:M` |
 | `${变量名}` | 插件；INI 配置变量名 |
+
+### 4.4 UI 模块内置接口
+
+如果模块包含前面板（UI 模块），CSM 框架提供以下两个内置接口，可按需记录到文档中：
+
+````markdown
+### `UI: Front Panel State`
+
+控制本模块前面板的显示状态。
+
+- **参数**：`APIString` — `Enum`：`Open`、`Close` 或 `Minimize`
+- **响应**：N/A
+
+### `UI: Cursor Set`
+
+设置前面板光标样式。
+
+- **参数**：`APIString` — `Enum`：光标类型名称（如 `Busy`、`Default`）
+- **响应**：N/A
+````
 
 ---
 
@@ -149,18 +171,23 @@
 ````markdown
 ### `状态名称`
 
-**广播类型**：`Status` 或 `Interrupt`
+**默认广播类型**：`Status`
 
 一句话说明该广播何时发出。
 
 - **参数**：广播携带的数据，包含类型标注。无参数时写 `N/A`。
 ````
 
+> **广播类型说明**：文档中记录的广播类型是发布方的默认行为。订阅方可通过 `-><register as Interrupt>` 修改接收类型，因此广播类型是可以被外部覆盖的默认值。
+
 ### 5.3 订阅语法示例
 
-```text
+```csm
 // 注册：将 MyModule 的 "Acquired Waveform" 路由到 Processor 的 "API: Process"
 Acquired Waveform@MyModule >> API: Process@Processor -><register>
+
+// 以 Interrupt 类型接收（覆盖发布方的默认广播类型）
+Acquired Waveform@MyModule >> API: Process@Processor -><register as Interrupt>
 
 // 取消注册
 Acquired Waveform@MyModule >> API: Process@Processor -><unregister>
@@ -284,7 +311,7 @@ MaxRetries    = 3         ; 出错后的重试次数
 
 ## 9. CSM 消息语法参考
 
-```text
+```csm
 // 本地状态（仅内部使用，不对外调用）
 DoSomething >> 参数
 
@@ -297,7 +324,7 @@ API: Configure >> 参数 -> 目标模块
 // 无应答异步调用
 API: Log >> 数据 ->| 目标模块
 
-// 同步调用——调用方等待响应
+// 同步调用——调用方等待响应（通常推荐使用）
 API: GetValue -@ 目标模块
 
 // 向所有订阅者广播正常状态
@@ -329,24 +356,25 @@ Status@源模块 >> API:Handler@处理模块 -><unregister>
    - 关闭序列（`Stop`）
    - 订阅示例（如果模块广播状态）
 3. 用注释（`//`）标注每一步。
-4. 使用 `text` 代码围栏包裹。
+4. 使用 `csm` 代码围栏包裹（**不要**使用 `text`）。
+5. **通常使用同步调用（`-@`）**，确保操作按序完成；根据需要可使用异步（`->`）或无应答（`->|`）等其他消息类型。
 
 **示例：**
 
-```text
+```csm
 // 假设模块以名称 "Logging" 启动
 
-// 1. 配置输出文件夹
-API: Update Settings >> C:\Data -> Logging
+// 1. 配置输出文件夹（同步调用，等待完成）
+API: Update Settings >> C:\Data -@ Logging
 
 // 2. 开始记录
-API: Start -> Logging
+API: Start -@ Logging
 
 // 3. 记录一段波形数据（MassData 参数格式）
-API: Log >> MassData-Start:89012,Size:1156 -> Logging
+API: Log >> MassData-Start:89012,Size:1156 -@ Logging
 
 // 4. 停止记录
-API: Stop -> Logging
+API: Stop -@ Logging
 ```
 
 ---
@@ -379,16 +407,19 @@ direction LR
 - [ ] 依赖项使用 2 列表格（链接名 + 类型）。
 - [ ] 每一个 `API:` case 分支都有独立的三级段落（`###`）。
 - [ ] 每个 API 段落包含描述、`**参数**` 和 `**响应**` 字段（含 CSM 参数类型和数据描述）。
+- [ ] 参数类型**不直接使用 `SafeStr`**；`String` 类型数据统一用 `APIString` 标注（`SafeStr` 是 `APIString` 针对 `String` 的内部实现）。
 - [ ] 所有 `Status`/`Interrupt` 广播都有独立的三级段落（`###`）。
-- [ ] 每个广播段落明确标注广播类型为 `Status` 或 `Interrupt`。
+- [ ] 每个广播段落使用 `**默认广播类型**：` 标注类型（`Status` 或 `Interrupt`）。
 - [ ] 如果模块有对外暴露的属性，每个属性都有独立的三级段落（`###`），包含类型（LabVIEW 数据类型）、访问方式、默认值和是否必须存在。
 - [ ] 属性的类型使用 **LabVIEW 数据类型**（如 `String`、`DBL`、`Boolean`），**不是** CSM 参数类型。
 - [ ] 每个属性注明 `**是否必须存在**`：必须（初始化后保证存在）或可选（可能不存在，调用方需提供默认值）。
 - [ ] 配置说明涵盖所有前面板控件和 INI 键值。
 - [ ] 调用限制说明包含初始化顺序和任何单例规则，且使用 `[!IMPORTANT]` 警告块格式（不使用 `- [ ]` checkbox）。
-- [ ] 至少包含一个带注释的使用示例。
-- [ ] 示例中所有消息字符串符合精确语法：`API: Xxx >> 参数 -> 模块名称`。
+- [ ] 至少包含一个带注释的使用示例，使用 `csm` 代码围栏（**不使用 `text`**）。
+- [ ] 示例中通常使用同步调用（`-@`）；根据需要可使用其他消息类型（`->`、`->|` 等）。
+- [ ] 示例中所有消息字符串符合精确语法：`API: Xxx >> 参数 -@ 模块名称`（或其他合适的调用类型）。
 - [ ] 订阅示例正确使用 `-><register>` 语法。
+- [ ] 如果是 UI 模块，记录 `UI: Front Panel State` 和 `UI: Cursor Set` 内置接口。
 - [ ] 可选：Mermaid 交互图存在且语法正确。
 
 ---
@@ -400,6 +431,7 @@ direction LR
 | 将内部状态记录为 API | 只记录 API case（包括以 `API:` 为前缀的 case 和无 `:` 分隔的非内置 case） |
 | 用表格列出 API 或广播 | 每个 API / 广播使用独立的 `###` 段落，描述在段落正文中 |
 | 参数只写描述，不写 CSM 参数类型 | 始终使用 `` `[CSM参数类型]` — `[数据类型]`：[描述] `` 格式 |
+| 参数类型直接使用 `SafeStr` | `String` 类型数据统一用 `APIString` 标注；`SafeStr` 是 `APIString` 针对 `String` 类型的内部实现，不在接口文档中直接出现 |
 | 复合数据只写数据类型，不展开字段 | 使用子列表逐一列出 Cluster 的每个字段及其类型 |
 | 订阅时忘写 `@模块名` | 始终使用 `Status@源模块 >> API:Handler@目标模块 -><register>` |
 | 无参数或无响应时留空 | 明确写 `N/A` |
@@ -409,6 +441,9 @@ direction LR
 | 属性与 API 消息接口混淆 | 属性通过 `CSM - Get/Set Module Attribute.vi` 直接读写，不需要发送消息；API 通过消息字符串调用 |
 | 假设属性一定存在而不处理 `Found = FALSE` 的情况 | 属性是可选的，读取时应始终提供合理的默认值，并根据 `Found` 输出决定是否使用默认值 |
 | 调用限制与注意事项使用 `- [ ]` checkbox 格式 | 改用 `> [!IMPORTANT]` 警告块格式（GitHub 支持的 alert 语法），每条限制以 `> -` 开头 |
+| 使用示例代码围栏使用 `text` | 改用 `csm` 代码围栏 |
+| 使用示例中使用异步调用 `->` | 通常使用同步调用 `-@`；根据需要才使用 `->`、`->|` 等 |
+| 广播类型字段使用 `**广播类型**：` | 改用 `**默认广播类型**：`；订阅方可通过 `-><register as Interrupt>` 修改接收类型 |
 
 ---
 
