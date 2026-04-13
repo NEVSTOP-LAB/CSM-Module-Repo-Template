@@ -1,47 +1,36 @@
 # `[模块名称]` — CSM 模块接口文档
 
-> **使用说明**
+<!-- 模板使用说明（填写完成后删除此块）
+  1. 复制本文件并将其重命名为你的模块名（例如 `DataLogger.md`）。
+  2. 将所有 `[占位符]` 替换为实际内容；删除不适用的章节和行。
+  3. 完成后删除本注释块。
+  ⚠️ 一模块一文件：每个 CSM 模块 VI 须对应一个独立 .md 文件，多模块不可合并；所属模块组填写在下方表格中。
+-->
+
+> **功能**：`[模块名称]` 是一个 CSM 模块，用于 [一句话描述模块的功能]。[可选：1～2 句补充说明主要设计目标或所解决的问题。]
 >
-> 1. 复制本文件并将其重命名为你的模块名（例如 `DataLogger.md`）。
-> 2. 将所有 `[占位符]` 替换为实际内容。
-> 3. 删除不适用的章节。
-> 4. 完成后删除本说明块。
-> 5. **⚠️ 一模块一文件原则**：每个 CSM 模块必须对应一个独立的 `.md` 文件，禁止将多个模块合并到同一个文件中描述。即使多个模块同属一个 `lvlib`/`lvlibp`，也须分别建立文件；模块所属的模块组信息填写在下方"模块信息"表格的 **所属模块组** 字段中。
-
----
-
-## 功能简述
-
-`[模块名称]` 是一个 CSM 模块，用于 [一句话描述模块的功能]。
-
-[可选：1～2 句补充说明主要设计目标或所解决的问题。]
-
----
-
-## 模块信息
-
-| 属性           | 值                                              |
-| -------------- | ----------------------------------------------- |
-| LabVIEW 版本   | ≥ [版本号，例如 2019]                           |
-| 支持的操作系统 | [Windows / Linux / macOS]                       |
-| 支持 RT        | [✅ 支持 / ❌ 不支持]                           |
-| 支持 64-bit    | [✅ 支持 / ❌ 不支持]                           |
-| 所属模块组     | [lvlib/lvlibp 名称，若不属于任何模块组则填 N/A] |
-
----
-
-## 依赖项
-
-| 依赖                                                                                                | 类型 |
-| --------------------------------------------------------------------------------------------------- | ---- |
-| [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine)             | 必须 |
-| [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) | 可选 |
-| [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)     | 可选 |
-| [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support)   | 可选 |
-| [CSM-Mermaid-Plugin](https://github.com/NEVSTOP-LAB/CSM-Mermaid-Plugin)                             | 可选 |
-| [CSM-TCP-Router-App](https://github.com/NEVSTOP-LAB/CSM-TCP-Router-App)                             | 可选 |
-
-> 删除不需要的行。
+> | 属性           | 值                                              |
+> | -------------- | ----------------------------------------------- |
+> | LabVIEW 版本   | ≥ [版本号，例如 2019]                           |
+> | 支持的操作系统 | [Windows / Linux / macOS]                       |
+> | 支持 RT        | [✅ 支持 / ❌ 不支持]                           |
+> | 支持 64-bit    | [✅ 支持 / ❌ 不支持]                           |
+> | 所属模块组     | [lvlib/lvlibp 名称，若不属于任何模块组则填 N/A] |
+>
+> **依赖项**
+>
+> | 依赖                                                                                                | 类型 |
+> | --------------------------------------------------------------------------------------------------- | ---- |
+> | [Communicable-State-Machine](https://github.com/NEVSTOP-LAB/Communicable-State-Machine)             | 必须 |
+> | [CSM-API-String-Arguments-Support](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) | 可选 |
+> | [CSM-MassData-Parameter-Support](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support)     | 可选 |
+> | [CSM-INI-Static-Variable-Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support)   | 可选 |
+>
+> **API 接口**：`API: Initialize` · `API: Start` · `API: Stop` · `API: Get Status` · [其他 API 名称]
+>
+> **状态广播**：`[状态名称 A]`（Status）· `[状态名称 B]`（Interrupt）<!-- 若无广播请删除此行 -->
+>
+> **属性**：`[属性名称 A]`（DBL，读写）· `[属性名称 B]`（Boolean，只读）<!-- 若无属性请删除此行 -->
 
 ---
 
