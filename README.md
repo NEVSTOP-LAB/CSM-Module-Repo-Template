@@ -2,6 +2,8 @@
 
 基于 [CSM（可通信状态机）](https://nevstop-lab.github.io/CSM-Wiki/) 框架的模块仓库模板，用于参考如何编写 CSM 模块接口文档并完成模块开发。
 
+This repository is a template for CSM (Communicable State Machine) LabVIEW modules. It provides a reusable module interface documentation template and AI-oriented authoring rules.
+
 ## 创建 CSM 模块
 
 ### 设计要点
@@ -26,15 +28,23 @@ CSM 消息接口只支持字符串参数，复杂数据需编码：
 | 类型 | 说明 |
 | --- | --- |
 | `APIString` | 纯文本字符串，支持键值对；可使用 [API String Arguments](https://github.com/NEVSTOP-LAB/CSM-API-String-Arguments-Support) 插件 |
-| `SafeStr` | 含特殊字符的字符串，编码为 `%[HEXCODE]` |
 | `HexStr` | 任意 LabVIEW 数据序列化为十六进制字符串 |
+| `ErrStr` | 将 LabVIEW Error Cluster 编码为字符串 |
 | `MassData` | 大数组/波形，通过内存映射缓冲区高效传递；需要 [MassData 插件](https://github.com/NEVSTOP-LAB/CSM-MassData-Parameter-Support) |
+| `${变量名}` | INI 配置变量引用；需要 [CSM INI Static Variable Support](https://github.com/NEVSTOP-LAB/CSM-INI-Static-Variable-Support) |
 | `用户自定义` | 自定义字符串格式；多数场景下 `APIString` 可满足需求 |
+
+> `SafeStr` 是 `APIString` 针对 `String` 类型数据的内部编码实现，接口文档中建议统一写作 `APIString`，不要直接标注为 `SafeStr`。
 
 ### 使用本模板
 
 1. 点击 **"Use this template"** 创建模块仓库，并以模块名命名（如 `CSM-DataLogger`）。
 2. 复制 [`module-template.md`](./module-template.md)，将其重命名为与模块 VI 同名的文件（如 `DataLogger.md`）；每个模块 VI 都应有一份对应的接口文档。
 3. 按模板说明替换占位符，填写接口文档。
+4. 如需让 AI 助手协助生成或审查接口文档，请参考 [`docs/csm-module-skill.md`](./docs/csm-module-skill.md) 中的结构化规则。
 
 更多详情请参阅 [CSM Wiki](https://nevstop-lab.github.io/CSM-Wiki/)。
+
+## 许可
+
+本模板采用 Apache License 2.0 发布；版权归属见 [`NOTICE`](./NOTICE)。
