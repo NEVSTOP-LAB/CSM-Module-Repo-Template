@@ -4,7 +4,7 @@
 
 ## 修改原则
 
-- 保持 `README.md`、`module-template.md` 与 `docs/csm-module-skill.md` 中的术语和规则一致。
+- 保持 `README.md`、`module-template.md` 与 `.github/copilot/skills/csm-module-docs/SKILL.md` 中的术语和规则一致。
 - 每个 CSM 模块应有一个与模块 VI 同名的 Markdown 接口文档。
 - 接口文档中的 `String` 参数统一标注为 `APIString`，不要直接标注为 `SafeStr`。
 - 属性接口使用 LabVIEW 数据类型，不使用 CSM 参数类型。
