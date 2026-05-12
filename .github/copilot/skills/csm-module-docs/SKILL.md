@@ -23,7 +23,7 @@
 | --- | --- |
 | **每个模块一个文档** | 名为 `Foo` 的模块 VI 必须在同一仓库中有对应的 `Foo.md` 文件。 |
 | **文件命名** | 与模块同名，扩展名为 `.md`。如果 VI 名称包含空格，文件名也可以包含空格。 |
-| **模板** | 从 [`module-template.md`](../module-template.md) 开始填写。 |
+| **模板** | 从 [`module-template.md`](../../../../module-template.md) 开始填写。 |
 
 ---
 
